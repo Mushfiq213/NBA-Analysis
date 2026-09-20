@@ -48,8 +48,31 @@ export class LineupsSummaryComponent implements OnInit, AfterViewInit {
   private readonly lineupsService = inject(LineupsService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private _sort?: MatSort;
+  private _paginator?: MatPaginator;
+
+  @ViewChild(MatSort)
+  set sort(sort: MatSort | undefined) {
+    if (sort) {
+      this._sort = sort;
+      this.dataSource.sort = sort;
+      this.setupSorting();
+    }
+  }
+  get sort(): MatSort | undefined {
+    return this._sort;
+  }
+
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator | undefined) {
+    if (paginator) {
+      this._paginator = paginator;
+      this.dataSource.paginator = paginator;
+    }
+  }
+  get paginator(): MatPaginator | undefined {
+    return this._paginator;
+  }
 
   readonly lineupSizes: LineupSizeOption[] = [
     { value: 5, label: '5-Man' },
@@ -83,22 +106,67 @@ export class LineupsSummaryComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);
 
   ngOnInit(): void {
+    this.setupSorting();
     this.fetchData();
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sortingDataAccessor = (item: any, property: string) => {
-      if (property === 'players') {
-        return item.players?.map((p: any) => p.name).join(', ') ?? '';
-      }
-      return item[property] ?? 0;
-    };
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    this.setupSorting();
+    this.cdr.detectChanges();
   }
 
   onFilterChange(): void {
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.fetchData();
+  }
+
+  private setupSorting(): void {
+    this.dataSource.sortingDataAccessor = (item: any, property: string): string | number => {
+      if (property === 'players') {
+        return (item.players?.map((p: any) => p.name).join(', ') ?? '').toLowerCase();
+      }
+      if (property === 'team_name') {
+        return (item.team_name ?? '').toLowerCase();
+      }
+      const val = item[property];
+      if (val === null || val === undefined) {
+        return -Infinity;
+      }
+      const num = Number(val);
+      return isNaN(num) ? String(val).toLowerCase() : num;
+    };
+
+    this.dataSource.sortData = (data: any[], sort: MatSort) => {
+      const active = sort.active;
+      const direction = sort.direction;
+      if (!active || direction === '') {
+        return data;
+      }
+
+      return data.slice().sort((a, b) => {
+        const valueA = this.dataSource.sortingDataAccessor(a, active);
+        const valueB = this.dataSource.sortingDataAccessor(b, active);
+
+        let comparatorResult = 0;
+        if (typeof valueA === 'number' && typeof valueB === 'number') {
+          comparatorResult = valueA - valueB;
+        } else {
+          const strA = valueA != null ? String(valueA) : '';
+          const strB = valueB != null ? String(valueB) : '';
+          comparatorResult = strA.localeCompare(strB, undefined, { numeric: true, sensitivity: 'base' });
+        }
+
+        return comparatorResult * (direction === 'asc' ? 1 : -1);
+      });
+    };
   }
 
   // ── Formatting helpers ────────────────────────────────────────────────
@@ -138,9 +206,17 @@ export class LineupsSummaryComponent implements OnInit, AfterViewInit {
 
     this.lineupsService.getLineupsLeagueSummary(params).subscribe({
       next: (data) => {
-        const rows = data.apiResponse as any[];
+        const rows = Array.isArray(data.apiResponse) ? (data.apiResponse as any[]) : [];
         this.dataSource.data = rows;
         this.totalLineups = rows.length;
+
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+          this.paginator.firstPage();
+        }
+        if (this.sort) {
+          this.dataSource.sort = this.sort;
+        }
 
         // Populate team filter from the first (unfiltered) response.
         if (this.teams.length === 0) {
@@ -156,13 +232,13 @@ export class LineupsSummaryComponent implements OnInit, AfterViewInit {
         }
 
         this.loading = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loading = false;
         this.dataSource.data = [];
         this.totalLineups = 0;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
     });
   }

@@ -49,121 +49,120 @@
   }
 
   <!-- ═══ Data Table ═══ -->
-  @if (!loading) {
-    <div class="table-card">
-      <div class="table-scroll">
-        <table mat-table [dataSource]="dataSource" matSort>
+  <div class="table-card" [style.display]="loading ? 'none' : 'block'">
+    <div class="table-scroll">
+      <table mat-table [dataSource]="dataSource" matSort matSortActive="net_rating" matSortDirection="desc" matSortDisableClear>
 
-          <!-- Lineup (players) -->
-          <ng-container matColumnDef="players">
-            <th mat-header-cell *matHeaderCellDef>Lineup</th>
-            <td mat-cell *matCellDef="let row">
-              <div class="player-list">
-                @for (player of row.players; track player.player_id) {
-                  <span class="player-chip">{{ player.name }}</span>
-                }
-              </div>
-            </td>
-          </ng-container>
+        <!-- Lineup (players) -->
+        <ng-container matColumnDef="players">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Lineup</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="player-list">
+              @for (player of row.players; track player.player_id) {
+                <span class="player-chip">{{ player.name }}</span>
+              }
+            </div>
+          </td>
+        </ng-container>
 
-          <!-- Team -->
-          <ng-container matColumnDef="team_name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Team</th>
-            <td mat-cell *matCellDef="let row">{{ row.team_name }}</td>
-          </ng-container>
+        <!-- Team -->
+        <ng-container matColumnDef="team_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Team</th>
+          <td mat-cell *matCellDef="let row">{{ row.team_name }}</td>
+        </ng-container>
 
-          <!-- Total Possessions -->
-          <ng-container matColumnDef="total_possessions">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Total possessions (offensive + defensive)">POSS</th>
-            <td mat-cell *matCellDef="let row">{{ row.total_possessions }}</td>
-          </ng-container>
+        <!-- Total Possessions -->
+        <ng-container matColumnDef="total_possessions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Total possessions (offensive + defensive)">POSS</th>
+          <td mat-cell *matCellDef="let row">{{ row.total_possessions }}</td>
+        </ng-container>
 
-          <!-- Offensive Rating -->
-          <ng-container matColumnDef="offensive_rating">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Points scored per 100 possessions on offense">OFF RTG</th>
-            <td mat-cell *matCellDef="let row">{{ formatRating(row.offensive_rating) }}</td>
-          </ng-container>
+        <!-- Offensive Rating -->
+        <ng-container matColumnDef="offensive_rating">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Points scored per 100 possessions on offense">OFF RTG</th>
+          <td mat-cell *matCellDef="let row">{{ formatRating(row.offensive_rating) }}</td>
+        </ng-container>
 
-          <!-- Defensive Rating -->
-          <ng-container matColumnDef="defensive_rating">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Points allowed per 100 possessions on defense (lower is better)">DEF RTG</th>
-            <td mat-cell *matCellDef="let row">{{ formatRating(row.defensive_rating) }}</td>
-          </ng-container>
+        <!-- Defensive Rating -->
+        <ng-container matColumnDef="defensive_rating">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Points allowed per 100 possessions on defense (lower is better)">DEF RTG</th>
+          <td mat-cell *matCellDef="let row">{{ formatRating(row.defensive_rating) }}</td>
+        </ng-container>
 
-          <!-- Net Rating -->
-          <ng-container matColumnDef="net_rating">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Offensive Rating minus Defensive Rating">NET RTG</th>
-            <td mat-cell *matCellDef="let row" [class]="getRatingClass(row.net_rating)">
-              {{ formatRating(row.net_rating) }}
-            </td>
-          </ng-container>
+        <!-- Net Rating -->
+        <ng-container matColumnDef="net_rating">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Offensive Rating minus Defensive Rating">NET RTG</th>
+          <td mat-cell *matCellDef="let row" [class]="getRatingClass(row.net_rating)">
+            {{ formatRating(row.net_rating) }}
+          </td>
+        </ng-container>
 
-          <!-- Effective FG% -->
-          <ng-container matColumnDef="offensive_efg_pct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Effective FG%: (FGM + 0.5 × 3PM) / FGA">eFG%</th>
-            <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_efg_pct) }}</td>
-          </ng-container>
+        <!-- Effective FG% -->
+        <ng-container matColumnDef="offensive_efg_pct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Effective FG%: (FGM + 0.5 × 3PM) / FGA">eFG%</th>
+          <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_efg_pct) }}</td>
+        </ng-container>
 
-          <!-- True Shooting % -->
-          <ng-container matColumnDef="offensive_ts_pct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="True Shooting %: PTS / (2 × (FGA + 0.44 × FTA))">TS%</th>
-            <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_ts_pct) }}</td>
-          </ng-container>
+        <!-- True Shooting % -->
+        <ng-container matColumnDef="offensive_ts_pct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="True Shooting %: PTS / (2 × (FGA + 0.44 × FTA))">TS%</th>
+          <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_ts_pct) }}</td>
+        </ng-container>
 
-          <!-- Turnover % -->
-          <ng-container matColumnDef="offensive_tov_pct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Turnover Rate: turnovers per play (lower is better)">TOV%</th>
-            <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_tov_pct) }}</td>
-          </ng-container>
+        <!-- Turnover % -->
+        <ng-container matColumnDef="offensive_tov_pct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Turnover Rate: turnovers per play (lower is better)">TOV%</th>
+          <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_tov_pct) }}</td>
+        </ng-container>
 
-          <!-- Offensive Rebound % -->
-          <ng-container matColumnDef="offensive_oreb_pct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Offensive Rebound Rate">OREB%</th>
-            <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_oreb_pct) }}</td>
-          </ng-container>
+        <!-- Offensive Rebound % -->
+        <ng-container matColumnDef="offensive_oreb_pct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Offensive Rebound Rate">OREB%</th>
+          <td mat-cell *matCellDef="let row">{{ formatPct(row.offensive_oreb_pct) }}</td>
+        </ng-container>
 
-          <!-- Defensive Rebound % -->
-          <ng-container matColumnDef="defensive_dreb_pct">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Defensive Rebound Rate (rebounds secured when defending)">DREB%</th>
-            <td mat-cell *matCellDef="let row">{{ formatPct(row.defensive_dreb_pct) }}</td>
-          </ng-container>
+        <!-- Defensive Rebound % -->
+        <ng-container matColumnDef="defensive_dreb_pct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Defensive Rebound Rate (rebounds secured when defending)">DREB%</th>
+          <td mat-cell *matCellDef="let row">{{ formatPct(row.defensive_dreb_pct) }}</td>
+        </ng-container>
 
-          <!-- Plus/Minus -->
-          <ng-container matColumnDef="plus_minus">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header
-                matTooltip="Point differential: points scored minus points allowed">+/&minus;</th>
-            <td mat-cell *matCellDef="let row" [class]="getRatingClass(row.plus_minus)">
-              {{ formatPlusMinus(row.plus_minus) }}
-            </td>
-          </ng-container>
+        <!-- Plus/Minus -->
+        <ng-container matColumnDef="plus_minus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+              matTooltip="Point differential: points scored minus points allowed">+/&minus;</th>
+          <td mat-cell *matCellDef="let row" [class]="getRatingClass(row.plus_minus)">
+            {{ formatPlusMinus(row.plus_minus) }}
+          </td>
+        </ng-container>
 
-          <!-- Row declarations -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </div>
-
-      <!-- Empty state -->
-      @if (dataSource.data.length === 0) {
-        <div class="empty-state">
-          <p>No lineups found matching your criteria.</p>
-          <p class="hint">Try lowering the minimum possessions or changing filters.</p>
-        </div>
-      }
-
-      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"
-                     [pageSize]="25"
-                     showFirstLastButtons>
-      </mat-paginator>
+        <!-- Row declarations -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
     </div>
-  }
+
+    <!-- Empty state -->
+    @if (dataSource.data.length === 0) {
+      <div class="empty-state">
+        <p>No lineups found matching your criteria.</p>
+        <p class="hint">Try lowering the minimum possessions or changing filters.</p>
+      </div>
+    }
+
+    <mat-paginator [length]="totalLineups"
+                   [pageSizeOptions]="[10, 25, 50, 100]"
+                   [pageSize]="25"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
 </div>

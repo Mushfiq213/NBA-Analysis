@@ -8,5 +8,12 @@ frontend/dist/*
 frontend-angular12-backup/
 
 __pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
 *.pgsql
 dbexport.pgsql
+backend/lineups5.json
+backend/players.json
