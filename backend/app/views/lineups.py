@@ -25,16 +25,24 @@ def _parse_int_query_param(request, key, default, minimum=None, maximum=None):
 
 
 def _get_lineup_query_options(request):
-    # Template for future query params:
-    # add options here and pass them through to helper functions.
+    """Extract and validate all query parameters for lineup queries."""
+    sort_order_raw = request.query_params.get('sort_order', 'desc')
+    sort_order = sort_order_raw if sort_order_raw in ('asc', 'desc') else 'desc'
+
+    team_id_raw = request.query_params.get('team_id', None)
+    player_id_raw = request.query_params.get('player_id', None)
+
     return {
         'lineup_size': _parse_int_query_param(
-            request,
-            key='lineup_size',
-            default=5,
-            minimum=1,
-            maximum=5,
+            request, key='lineup_size', default=5, minimum=1, maximum=5,
         ),
+        'min_possessions': _parse_int_query_param(
+            request, key='min_possessions', default=1, minimum=1,
+        ),
+        'sort_by': request.query_params.get('sort_by', 'net_rating'),
+        'sort_order': sort_order,
+        'team_id': team_id_raw if team_id_raw else None,
+        'player_id': player_id_raw if player_id_raw else None,
     }
 
 

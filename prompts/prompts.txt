@@ -1,0 +1,9 @@
+Ordered list of AI prompts used during this project:
+
+1. "OKC Technical Project Deliverable [full assignment text] — what to do, I got this project as assignment for my intern, help me out to complete it" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+
+2. "this is the repo can u clone it [repo URL]" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+
+3. "finish the project" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+
+4. "how much is left and finish the remaining work" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity

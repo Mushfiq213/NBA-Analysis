@@ -1,7 +1,7 @@
-# Submission Information
+# Submission
 
-Applicant Name:
+**Name:** Mushfiq
 
-Applicant Email Address:
+**Email:** mushfiq213@gmail.com
 
-Deployed Project URL:
+**Frontend Public Domain URL:** _[fill in after Railway deployment]_

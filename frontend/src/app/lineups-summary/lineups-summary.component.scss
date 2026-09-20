@@ -1,12 +1,170 @@
 :host {
   display: block;
+  padding: 24px 28px;
+  background: #f0f4f8;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.placeholder {
+/* ═══ Header ═══ */
+.dashboard-header {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #102a43;
+    margin: 0 0 4px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #627d98;
+    margin: 0;
+  }
+}
+
+/* ═══ Filter Bar ═══ */
+.filters-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 600px;
-  font-size: 18px;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+}
+
+.filter-field {
+  width: 160px;
+}
+
+.filter-field--narrow {
+  width: 130px;
+}
+
+.filter-summary {
+  margin-left: auto;
+}
+
+.lineup-count {
+  font-size: 13px;
+  font-weight: 600;
   color: #486581;
+  background: #d9e2ec;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ═══ Loading ═══ */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  color: #627d98;
+
+  p {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+}
+
+/* ═══ Table Card ═══ */
+.table-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 1100px;
+}
+
+/* Header cells */
+th.mat-mdc-header-cell {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #334e68;
+  background: #f0f4f8;
+  padding: 14px 16px !important;
+  white-space: nowrap;
+}
+
+/* Data cells */
+td.mat-mdc-cell {
+  font-size: 13px;
+  color: #243b53;
+  padding: 10px 16px !important;
+  border-bottom: 1px solid #e4e7eb;
+}
+
+tr.mat-mdc-row:hover {
+  background: #f7fafc;
+}
+
+/* ═══ Player Chips ═══ */
+.player-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 200px;
+}
+
+.player-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #dceefb;
+  color: #0a558c;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ═══ Color-coded Values ═══ */
+.positive {
+  color: #27ab83 !important;
+  font-weight: 700;
+}
+
+.negative {
+  color: #e12d39 !important;
+  font-weight: 700;
+}
+
+.neutral {
+  color: #627d98;
+}
+
+/* ═══ Empty State ═══ */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #627d98;
+
+  p {
+    margin: 4px 0;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: #9fb3c8;
+  }
+}
+
+/* ═══ Paginator ═══ */
+::ng-deep .mat-mdc-paginator {
+  border-top: 1px solid #e4e7eb;
 }
