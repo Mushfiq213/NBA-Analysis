@@ -1,9 +1,26 @@
 Ordered list of AI prompts used during this project:
 
-1. "OKC Technical Project Deliverable [full assignment text] — what to do, I got this project as assignment for my intern, help me out to complete it" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+Model queried: GPT-5.6 Luna
 
-2. "this is the repo can u clone it [repo URL]" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+1. Explain the existing project architecture and the responsibility of each major frontend and backend component.
 
-3. "finish the project" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+2. Analyze the NBA lineup data and explain which statistics are useful for evaluating lineup performance.
 
-4. "how much is left and finish the remaining work" — Model: Claude Opus 4.6 (Thinking) via Google Antigravity
+3. Help structure the lineup summary API so that the frontend can consume the required lineup statistics efficiently.
+
+4. Review the Angular component structure and suggest a clean way to manage API data, loading states, filters, and table state.
+
+5. Explain how Angular Material sorting behaves when table data is loaded asynchronously from an API.
+
+6. Help implement client-side sorting for mixed data types, including player names, team names, and numerical performance metrics.
+
+7. Help verify that the frontend API integration is using the correct production backend endpoint.
+
+8. Explain how PostgreSQL environment variables should be configured when deploying a Django application on Railway.
+
+9. Help troubleshoot Django database migrations and initial data ingestion in a Railway production environment.
+
+10. Explain how separate frontend and backend services in a monorepo can be configured on Railway.
+
+11. Review the completed application against the technical assignment requirements and identify any missing submission items.
+
