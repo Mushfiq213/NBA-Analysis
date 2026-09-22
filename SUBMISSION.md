@@ -1,6 +1,6 @@
 # Submission
 
-**Name:** Mushfiq
+**Name:** Syed Mushfiq Alam
 
 **Email:** mushfiqsyed9@gmail.com
 
